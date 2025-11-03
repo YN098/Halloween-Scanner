@@ -1,69 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Halloween</title>
   <style>
     body {
-      background-color: #0b0b0b;
-      color: orange;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      height: 100vh;
       margin: 0;
+      height: 100vh;
+      background-color: #1a0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
       overflow: hidden;
+      color: #ff7518;
+      font-family: 'Trebuchet MS', sans-serif;
     }
 
     h1 {
-      margin-top: 20%;
       font-size: 2.5em;
-      animation: fadeIn 2s ease-in-out;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px #000;
     }
 
-    .witch {
+    .witch-gif {
       position: absolute;
-      top: 20%;
-      left: -150px;
-      width: 150px;
-      animation: flyAcross 8s linear infinite;
+      top: 35%;
+      left: -200px;
+      width: 120px;
+      animation: fly 8s linear infinite;
     }
 
-    @keyframes flyAcross {
-      0% { left: -150px; top: 20%; transform: rotate(0deg); }
-      50% { top: 10%; }
-      100% { left: 110%; top: 20%; transform: rotate(-5deg); }
+    @keyframes fly {
+      from { left: -200px; transform: rotate(0deg); }
+      to { left: 110%; transform: rotate(10deg); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    audio {
-      display: none;
+    .credit {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.9em;
+      color: #ffa94d;
     }
   </style>
 </head>
 <body>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Witch_on_broomstick_silhouette.png" class="witch" alt="Flying Witch">
-  <h1 id="wish"></h1>
+  <h1>Happy Halloween <span id="name">Friend</span><br>– From Yani</h1>
+  
+  <!-- Witch animation -->
+  <img src="witch-23590_256.gif" alt="Flying Witch" class="witch-gif">
 
-  <!-- Background spooky music -->
-  <audio id="bgMusic" autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_eb9f0dfbfb.mp3?filename=halloween-theme-ambient-122213.mp3" type="audio/mpeg">
-  </audio>
+  <div class="credit">👻 Enjoy your spooky surprise!</div>
 
   <script>
-    const name = prompt("Enter your name:");
-    const wish = document.getElementById("wish");
-    wish.innerHTML = `🎃 Happy Halloween ${name}!<br>— From Yani 🕷️`;
-
-    // Start music when user interacts (for mobile browsers)
-    const music = document.getElementById('bgMusic');
-    document.body.addEventListener('click', () => {
-      music.play().catch(() => {});
-    });
+    // Optional: automatically personalize using URL parameter ?name=Someone
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name");
+    if (name) document.getElementById("name").textContent = name;
   </script>
 </body>
 </html>
