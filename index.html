@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Halloween — TrueBlue</title>
+<style>
+  :root{
+    --trueblue:#003399;
+    --accent:#ff7a00;
+    --bg:#0b0b0b;
+    --card:#111;
+    --text:#fff;
+  }
+  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: linear-gradient(180deg,#080808 0%, #222 100%);
+    color:var(--text);
+  }
+  .wrap{
+    width:100%;
+    max-width:720px;
+    margin:24px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15));
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+    padding:18px;
+    text-align:center;
+  }
+
+  h1{margin:8px 0 6px;font-size:20px;letter-spacing:1px;color:var(--trueblue)}
+  p.lead{margin:0 0 12px;color:#ddd}
+
+  .input-row{display:flex;gap:8px;justify-content:center;margin:12px 0 18px}
+  input[type="text"]{
+    padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--text);
+    min-width:180px;font-size:16px;
+  }
+  button{
+    background:var(--accent);color:#111;border:0;padding:12px 14px;border-radius:8px;font-weight:600;
+    box-shadow:0 6px 12px rgba(255,122,0,0.14);
+  }
+
+  .stage{position:relative;height:360px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#121212 0%, #0b0b0b 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px}
+  .message{position:absolute;left:16px;right:16px;top:18px;text-align:center;font-size:22px;font-weight:700;color:#fff;text-shadow:0 4px 18px rgba(0,0,0,0.6)}
+  .sub{margin-top:6px;font-size:14px;color:#ddd;font-weight:600}
+
+  /* Animated pumpkin area */
+  .anim-wrap{display:flex;gap:12px;align-items:center;justify-content:center;flex-direction:column}
+  .svg-box{width:260px;height:260px;display:block}
+
+  /* name text */
+  .name-banner{
+    margin-top:10px;font-size:20px;color:var(--trueblue);
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03));
+    padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
+  }
+
+  /* small controls */
+  .controls{display:flex;gap:8px;justify-content:center;margin-top:12px}
+  .controls a{color:#ddd;text-decoration:none;font-size:14px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)}
+  @media (max-width:480px){
+    .svg-box{width:200px;height:200px}
+    .stage{height:320px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <h1>TrueBlue — Halloween</h1>
+    <p class="lead">Enter your name and tap "Show my wish" — then enjoy a Halloween greeting made just for you.</p>
+
+    <div class="input-row" id="entryRow">
+      <input id="nameInput" placeholder="Type your name..." aria-label="Your name" />
+      <button id="goBtn">Show my wish</button>
+    </div>
+
+    <div class="stage" id="stage" aria-live="polite" style="display:none;">
+      <div class="message" id="titleLine">Happy Halloween</div>
+
+      <div class="anim-wrap">
+        <!-- Animated SVG pumpkin / moon + floating bats. This acts like a GIF -->
+        <svg class="svg-box" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop offset="0%" stop-color="#ffb347"/>
+              <stop offset="100%" stop-color="#ff7a00"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2.8" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- glowing circle background -->
+          <circle cx="100" cy="100" r="78" fill="url(#g1)" opacity="0.15" />
+          <!-- pumpkin body -->
+          <g transform="translate(20,18)">
+            <g id="pump" filter="url(#glow)">
+              <ellipse cx="80" cy="90" rx="58" ry="52" fill="#ff8c2c"/>
+              <path d="M22 90 C24 40,140 40,138 90 C130 120,30 120,22 90" fill="#ff7000" opacity="0.9"/>
+              <!-- lines -->
+              <path d="M36 75 C52 50,60 40,80 40 C100 40,108 50,124 75" stroke="#ff9b3b" stroke-width="3" fill="none" stroke-linecap="round" />
+            </g>
+
+            <!-- face (animated blink) -->
+            <g id="face" transform="translate(0,0)">
+              <g id="eyes" fill="#111">
+                <ellipse cx="58" cy="80" rx="8" ry="12"></ellipse>
+                <ellipse cx="102" cy="80" rx="8" ry="12"></ellipse>
+              </g>
+
+              <path id="mouth" d="M58 106 Q80 123,102 106 Q80 135,58 106" fill="#111" transform-origin="80px 116px">
+                <animate attributeName="d" dur="3.2s" repeatCount="indefinite"
+                  values="
+                    M58 106 Q80 123,102 106 Q80 135,58 106;
+                    M58 106 Q80 115,102 106 Q80 125,58 106;
+                    M58 106 Q80 123,102 106 Q80 135,58 106" />
+              </path>
+            </g>
+
+            <!-- small stem -->
+            <rect x="72" y="30" width="14" height="20" rx="4" fill="#5c3b00" />
+          </g>
+
+          <!-- floating bats (looping translate animations) -->
+          <g id="bats" fill="#0f0f0f" opacity="0.9">
+            <path d="M8 28 C20 10,40 10,52 28 C40 26,28 32,8 28z" transform="translate(10,6)">
+              <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="6s" repeatCount="indefinite"
+                values="0,0; 60,-30; 0,-60; -40,-30; 0,0" />
+            </path>
+            <path d="M8 28 C20 10,40 10,52 28 C40 26,28 32,8 28z" transform="translate(120,30) scale(0.8)">
+              <animateTransform attributeName="transform" attributeType="XML" type="translate" dur="8s" repeatCount="indefinite"
+                values="0,0; -80,-40; -120,-20; -80,10; 0,0" />
+            </path>
+          </g>
+        </svg>
+
+        <div class="name-banner" id="nameBanner">Happy Halloween</div>
+      </div>
+
+      <div class="controls" style="margin-top:14px">
+        <a href="#" id="reenter">Change name</a>
+        <a href="#" id="downloadBtn">Download image</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const input = document.getElementById('nameInput');
+  const btn = document.getElementById('goBtn');
+  const stage = document.getElementById('stage');
+  const entryRow = document.getElementById('entryRow');
+  const nameBanner = document.getElementById('nameBanner');
+  const titleLine = document.getElementById('titleLine');
+  const reenter = document.getElementById('reenter');
+  const downloadBtn = document.getElementById('downloadBtn');
+
+  // simple safe-sanitizer for displayed name
+  function safeName(s){
+    if(!s) return '';
+    return s.replace(/</g,"&lt;").replace(/>/g,"&gt;").trim();
+  }
+
+  btn.addEventListener('click', showGreeting);
+  input.addEventListener('keydown',(e)=>{ if(e.key==='Enter') showGreeting(); });
+
+  function showGreeting(){
+    const raw = input.value || '';
+    const name = safeName(raw);
+    if(!name){
+      input.focus();
+      input.setAttribute('placeholder','Please enter a name...');
+      return;
+    }
+    titleLine.textContent = `Happy Halloween`;
+    nameBanner.innerHTML = `${name}! 👻`;
+    entryRow.style.display='none';
+    stage.style.display='block';
+    // small animation: flash the name banner briefly
+    nameBanner.style.transform='scale(0.98)';
+    setTimeout(()=>nameBanner.style.transform='scale(1)', 120);
+    // optional: speak greeting (muted by default on some phones)
+    // try speak - if allowed
+    if('speechSynthesis' in window){
+      const msg = new SpeechSynthesisUtterance(`Happy Halloween, ${name}`);
+      msg.lang = 'en-US';
+      msg.rate = 1;
+      // do not force speak on phones; run only if user previously interacted (they did click)
+      try { window.speechSynthesis.speak(msg); } catch(e){}
+    }
+  }
+
+  reenter.addEventListener('click', (e)=>{
+    e.preventDefault();
+    stage.style.display='none';
+    entryRow.style.display='flex';
+    input.focus();
+  });
+
+  // create downloadable PNG snapshot (animated frames not captured, but produces still)
+  downloadBtn.addEventListener('click', async (e)=>{
+    e.preventDefault();
+    // we can capture a still PNG by drawing the SVG into canvas and adding the text
+    const svg = document.querySelector('.svg-box').outerHTML;
+    const nameText = nameBanner.textContent || '';
+    const blob = new Blob([`
+      <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800">
+        <foreignObject width="100%" height="100%">
+          <div xmlns="http://www.w3.org/1999/xhtml"
+               style="width:800px;height:800px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#080808,#111);">
+            <div style="text-align:center;">
+              ${svg}
+              <div style="color:#ffffff;font-size:36px;font-weight:700;margin-top:12px;">${nameText}</div>
+            </div>
+          </div>
+        </foreignObject>
+      </svg>`], {type:'image/svg+xml'});
+
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = function(){
+      const c = document.createElement('canvas');
+      c.width = img.width;
+      c.height = img.height;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle='#0b0b0b';
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.drawImage(img,0,0);
+      URL.revokeObjectURL(url);
+      c.toBlob(function(b){
+        const down = document.createElement('a');
+        down.href = URL.createObjectURL(b);
+        down.download = 'happy-halloween.png';
+        document.body.appendChild(down);
+        down.click();
+        down.remove();
+      }, 'image/png');
+    };
+    img.onerror = ()=>{ alert('Unable to create download on this device. Try saving a screenshot.'); }
+    img.src = url;
+  });
+</script>
+</body>
+</html>
