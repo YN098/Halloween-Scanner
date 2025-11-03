@@ -19,17 +19,18 @@
     }
 
     h1 {
-      font-size: 2.5em;
+      font-size: 2.8em;
       text-align: center;
       margin-bottom: 20px;
-      text-shadow: 2px 2px 8px #000;
+      text-shadow: 2px 2px 10px #000;
+      transition: opacity 1s ease-in-out;
     }
 
     .witch-gif {
       position: absolute;
       top: 35%;
       left: -200px;
-      width: 120px;
+      width: 130px;
       animation: fly 8s linear infinite;
     }
 
@@ -47,18 +48,22 @@
   </style>
 </head>
 <body>
-  <h1>Happy Halloween <span id="name">Friend</span><br>– From Yani</h1>
+  <h1 id="greeting">🎃 Happy Halloween! 🎃</h1>
   
   <!-- Witch animation -->
   <img src="witch-23590_256.gif" alt="Flying Witch" class="witch-gif">
 
-  <div class="credit">👻 Enjoy your spooky surprise!</div>
+  <div class="credit">👻 From Yani</div>
 
   <script>
-    // Optional: automatically personalize using URL parameter ?name=Someone
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
-    if (name) document.getElementById("name").textContent = name;
+    window.onload = function() {
+      let userName = prompt("Enter your name to get your Halloween wish!");
+      if (userName === null || userName.trim() === "") {
+        userName = "Friend";
+      }
+      const greeting = document.getElementById("greeting");
+      greeting.innerHTML = `🎃 Happy Halloween ${userName}! 🎃<br>– From Yani`;
+    };
   </script>
 </body>
 </html>
